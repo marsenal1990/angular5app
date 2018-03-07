@@ -1,0 +1,14 @@
+<div class="card" >
+  <div class="card-header">
+    <h5 style="margin-bottom:0px">
+
+<span [appState]="value.state"> {{value.state}} </span>
+    </h5>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Nom : {{value.name}}</h5>
+    <p class="card-text">Reference : {{value.reference}}</p>
+    <button (click)="changeState(state.ENCOURS)" [hidden]="value.state!=state.ALIVRER" class="btn btn-primary">{{state.ENCOURS}}</button>
+    <button (click)="changeState(state.LIVREE)"[hidden]="value.state!=state.ENCOURS" class="btn btn-success">{{state.LIVREE}}</button>
+  </div>
+</div>

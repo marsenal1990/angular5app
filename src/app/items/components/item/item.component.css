@@ -1,0 +1,12 @@
+.badge{
+  padding: 10px 11px;
+  width: 85px;
+}
+
+.card{
+  border: none;
+-webkit-box-shadow: 0 2px 2px rgba(0,0,0,.24),0 0 2px rgba(0,0,0,.12);
+box-shadow: 0 2px 2px rgba(0,0,0,.24),0 0 2px rgba(0,0,0,.12);
+margin-bottom:0.5rem;
+margin-top: 0.3rem;
+}

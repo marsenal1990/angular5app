@@ -8,20 +8,28 @@ import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { PageNotFoundModule } from './page-not-found/page-not-found.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NavComponent } from './shared/components/nav/nav.component';
+import { CollectionsService } from './core/services/collection/collections.service';
+import { ItemsModule } from './items/items.module';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports:[
     BrowserModule,
+    CommonModule,
     CoreModule,
     SharedModule,
-    HomeModule,
+    HomeModule, 
+    ItemsModule,
     PageNotFoundModule,
+    FormsModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [CollectionsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

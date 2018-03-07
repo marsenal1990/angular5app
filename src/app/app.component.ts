@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CollectionsService } from './core/services/collection/collections.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'WEB APP';
+
+  constructor(private collectionsService: CollectionsService) {
+
+    
+  }
+
 
 }
