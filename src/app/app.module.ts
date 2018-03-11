@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { environment } from '../environments/environment.prod';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { ItemDetailResolverService } from './core/services/item-detail-resolver/item-detail-resolver.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
     PageNotFoundModule,
 
   ],
-  providers: [CollectionsService, AngularFirestore],
+  providers: [CollectionsService, AngularFirestore, ItemDetailResolverService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,1 +1,1 @@
-<app-form ></app-form>
+<app-form (newItem)="process($event)" *ngIf="item" [item]="item"  titleForm="Modifier une commande"></app-form>

@@ -5,7 +5,7 @@
       <span [appState]="value.state"> {{value.state}} </span>
     </h5>
     <div>
-      <a routerLink="/items/edit/{{value.id}}"  class="btn btn-primary">
+      <a [routerLink]="['/items/edit', value.id]" class="btn btn-primary" >
         <i class="fa fa-pencil"></i>
       </a>
       <button [disabled]="value.state===state.LIVREE || value.state===state.ENCOURS" class="btn btn-danger " (click)="remove()">

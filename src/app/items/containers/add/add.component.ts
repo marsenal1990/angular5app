@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  constructor(private service: CollectionsService, private router : Router) {}
+  constructor(private service: CollectionsService, private router: Router) {}
 
   ngOnInit() {}
 

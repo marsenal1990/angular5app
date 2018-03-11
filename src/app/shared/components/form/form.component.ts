@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { State } from '../../enum/state.enum';
 import { Item } from '../../models/item';
 import {
@@ -18,6 +18,8 @@ import 'rxjs/add/observable/combineLatest';
 })
 export class FormComponent implements OnInit {
   @Output() newItem: EventEmitter<Item> = new EventEmitter();
+  @Input() titleForm: string;
+  @Input() item: Item;
   state = State;
   stateLibelles = Object.values(State);
   form: FormGroup;
@@ -30,43 +32,48 @@ export class FormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
     Observable.combineLatest([
       this.activatedRoute.paramMap,
       this.activatedRoute.url
     ]).subscribe(response => {
       this.id = response[0].get('id');
-      this.opp = (response[1])[0].path;
+      this.opp = response[1][0].path;
       this.createForm();
-     });
+    });
   }
 
   createForm() {
     this.form = this.fb.group({
-      id: '',
-      name: ['', Validators.required],
-      reference: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(8)
-        ])
+      name: [
+        this.item ? this.item.name : '',
+        Validators.compose([Validators.required, Validators.minLength(5)])
       ],
-      state: State.ALIVRER
+      reference: [
+        this.item ? this.item.reference : '',
+        Validators.compose([Validators.required, Validators.minLength(4)])
+      ],
+      state: [this.item ? this.item.state : State.ALIVRER]
     });
-    if (this.opp === 'edit') {
-    //  this.form.setValue(this.service.findById(this.id));
+  }
+
+  getItem(): Item {
+    const data = this.form.value as Item;
+    if (!this.item) {
+      return data;
     }
-  }
-
-  process() {
-    this.newItem.emit(this.form.value);
-    this.form.reset();
-    this.form.get('state').setValue(State.ALIVRER);
-  }
-
+    const id = this.item.id;
+    return {id, ...data};
+}
+process(): void {
+  const datas = this.getItem();
+  this.newItem.emit(datas);
+  this.reset();
+}
+reset(): void {
+  this.form.reset();
+  this.form.get('state').setValue(State.ALIVRER);
+}
   isError(val: string): boolean {
-    return this.form.get(val).invalid && this.form.get(val).touched;
+    return this.form.get(val).dirty && this.form.get(val).hasError('minlength');
   }
 }
