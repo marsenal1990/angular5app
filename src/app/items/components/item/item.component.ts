@@ -1,24 +1,26 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { Item } from "../../../shared/models/item";
-import { State } from "../../../shared/enum/state.enum";
+import { Component, OnInit, Input } from '@angular/core';
+import { Item } from '../../../shared/models/item';
+import { State } from '../../../shared/enum/state.enum';
+import { CollectionsService } from '../../../core/services/collection/collections.service';
 
 @Component({
-  selector: "app-item",
-  templateUrl: "./item.component.html",
-  styleUrls: ["./item.component.css"]
+  selector: 'app-item',
+  templateUrl: './item.component.html',
+  styleUrls: ['./item.component.css']
 })
 export class ItemComponent implements OnInit {
-  @Input("value") value: Item;
+  @Input('value') value: Item;
   state = State;
-  constructor() {}
+  constructor(private service: CollectionsService) {}
 
   ngOnInit() {}
 
   changeState(state: State) {
     this.value.state = state;
   }
-
-  everyFiveSeconds() {
-    console.log("houssem");
+  remove() {
+    this.service.remove(this.value);
   }
+
+
 }

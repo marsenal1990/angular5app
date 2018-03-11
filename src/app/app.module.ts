@@ -13,23 +13,37 @@ import { CollectionsService } from './core/services/collection/collections.servi
 import { ItemsModule } from './items/items.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './/app-routing.module';
+import { Router } from '@angular/router';
+import { environment } from '../environments/environment.prod';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
-  imports:[
+  imports: [
     BrowserModule,
     CommonModule,
     CoreModule,
     SharedModule,
-    HomeModule, 
+    HomeModule,
     ItemsModule,
-    PageNotFoundModule,
     FormsModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    PageNotFoundModule,
+
   ],
-  providers: [CollectionsService],
+  providers: [CollectionsService, AngularFirestore],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(router: Router) {
+    if (!environment.production) {
+      console.log('Routes: ', JSON.stringify(router.config, undefined, 2));
+    }
+  }
+}

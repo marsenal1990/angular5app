@@ -1,36 +1,72 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { State } from '../../enum/state.enum';
 import { Item } from '../../models/item';
-
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { CollectionsService } from '../../../core/services/collection/collections.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/combineLatest';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-state = State;
-stateLibelles = Object.values(State);
-etat: State;
-newItem: Item;
-
-
-  constructor() { }
+  @Output() newItem: EventEmitter<Item> = new EventEmitter();
+  state = State;
+  stateLibelles = Object.values(State);
+  form: FormGroup;
+  private id: string;
+  private opp: string;
+  constructor(
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private service: CollectionsService
+  ) {}
 
   ngOnInit() {
-    this.reset();
-        this.etat = State.ALIVRER;
-  }
-  process() {
-  console.log(this.newItem.name);
-  this.reset();
+
+    Observable.combineLatest([
+      this.activatedRoute.paramMap,
+      this.activatedRoute.url
+    ]).subscribe(response => {
+      this.id = response[0].get('id');
+      this.opp = (response[1])[0].path;
+      this.createForm();
+     });
   }
 
-  reset() {
-    this.newItem = {
+  createForm() {
+    this.form = this.fb.group({
       id: '',
-      name: '',
-      reference: '',
-      state: ''
+      name: ['', Validators.required],
+      reference: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(8)
+        ])
+      ],
+      state: State.ALIVRER
+    });
+    if (this.opp === 'edit') {
+    //  this.form.setValue(this.service.findById(this.id));
     }
+  }
+
+  process() {
+    this.newItem.emit(this.form.value);
+    this.form.reset();
+    this.form.get('state').setValue(State.ALIVRER);
+  }
+
+  isError(val: string): boolean {
+    return this.form.get(val).invalid && this.form.get(val).touched;
   }
 }
