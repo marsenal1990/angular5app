@@ -17,6 +17,7 @@ export class ItemComponent implements OnInit {
 
   changeState(state: State) {
     this.value.state = state;
+    this.service.update(this.value);
   }
   remove() {
     this.service.remove(this.value);

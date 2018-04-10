@@ -32,14 +32,7 @@ export class FormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    Observable.combineLatest([
-      this.activatedRoute.paramMap,
-      this.activatedRoute.url
-    ]).subscribe(response => {
-      this.id = response[0].get('id');
-      this.opp = response[1][0].path;
-      this.createForm();
-    });
+    this.createForm();
   }
 
   createForm() {
@@ -62,17 +55,18 @@ export class FormComponent implements OnInit {
       return data;
     }
     const id = this.item.id;
-    return {id, ...data};
-}
-process(): void {
-  const datas = this.getItem();
-  this.newItem.emit(datas);
-  this.reset();
-}
-reset(): void {
-  this.form.reset();
-  this.form.get('state').setValue(State.ALIVRER);
-}
+    return { id, ...data };
+  }
+
+  process(): void {
+    const datas = this.getItem();
+    this.newItem.emit(datas);
+    this.reset();
+  }
+  reset(): void {
+    this.form.reset();
+    this.form.get('state').setValue(State.ALIVRER);
+  }
   isError(val: string): boolean {
     return this.form.get(val).dirty && this.form.get(val).hasError('minlength');
   }
